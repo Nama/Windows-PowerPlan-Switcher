@@ -1,8 +1,8 @@
 param(
-    [bool]$keepplan
+    [string]$keepplan
 )
 
-if ($keepplan) {
+if ($keepplan -eq 'true') {
     Write-Output 'true' > keepplan.txt
 }
 else {

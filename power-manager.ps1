@@ -4,6 +4,7 @@ $MaxCPUUsage = 30
 $CheckEverySeconds = 3
 $GamingPowerPlanID = '9897998c-92de-4669-853f-b7cd3ecb2790'
 $NoGamingPowerPlanID = 'a1841308-3541-4fab-bc81-f71556f20b4a'
+$LGLCD = $true
 #$DebugPreference = "Continue"
 
 ## Power Plans IDs (Use Without #)
@@ -25,6 +26,9 @@ while ($true){
         Write-Debug 'Keep Powerplan'
         if ((powercfg /GetActiveScheme) -notlike ("*" + $GamingPowerPlanID + "*")) {
             powercfg -s $GamingPowerplanID
+            if ($LGLCD) {
+                ./check-plan.ps1
+            }
             Write-Debug 'Set Gaming Powerplan'
         }
         Continue
@@ -35,6 +39,9 @@ while ($true){
         if ($CPULoad -ge $MaxCPUUsage){
             Write-Debug 'CPU Load is higher than MaxCPU'
             powercfg -s $GamingPowerplanID
+            if ($LGLCD) {
+                ./check-plan.ps1
+            }
             Write-Debug 'Gaming Powerplan activated'
         }
     }
@@ -43,6 +50,9 @@ while ($true){
         if ($CPULoad -le $MinCPUUsage){
             Write-Debug 'CPU Load is lower than MinCPU'
             powercfg -s $NoGamingPowerPlanID
+            if ($LGLCD) {
+                ./check-plan.ps1
+            }
             Write-Debug 'Powersaving Powerplan activated'
         }
     }
