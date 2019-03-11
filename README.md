@@ -17,6 +17,9 @@ Will disable the fixed powerplan and make it CPU load dependant again
 You can set hotkey for the script with `$true` and `$false` for easy switching.  
 (Shortcut on Desktop, or G-Keys on Logitech keyboards)
 
+## See current status on Logitech display
+Run `check-plan.ps1` to see the current state of powerplan and NVIDIA performance state on the display of your keyboard.
+
 # Other Info
 I also use NVIDIA Inspector with Multi Display Power Saver and I didn't want the powerplan dependant on GPU load (and performance state) for tasks only with CPU load.
   
