@@ -20,6 +20,9 @@ You can set hotkey for the script with `$true` and `$false` for easy switching.
 ## See current status on Logitech display
 Run `check-plan.ps1` to see the current state of powerplan and NVIDIA performance state on the display of your keyboard.
 
+## Programs to keep gaming-plan
+Enter the processes in `gamingprocess.txt` (_without .exe_). If one of these processes are running, gaming-plan will be kept.
+
 # Other Info
 I also use NVIDIA Inspector with Multi Display Power Saver and I didn't want the powerplan dependant on GPU load (and performance state) for tasks only with CPU load.
   

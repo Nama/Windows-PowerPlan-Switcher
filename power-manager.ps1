@@ -33,6 +33,25 @@ while ($true){
         }
         Continue
     }
+    $process_list = gc 'gamingprocess.txt'
+    foreach ($this_process in $process_list) {
+        $process_exists = Get-Process -erroraction 'silentlycontinue' -Name $this_process
+        if ($process_exists) {
+            if ((powercfg /GetActiveScheme) -notlike ("*" + $GamingPowerPlanID + "*")) {
+                Write-Debug "$this_process is running"
+                powercfg -s $GamingPowerplanID
+                if ($LGLCD)
+                {
+                    ./check-plan.ps1
+                }
+            }
+            break
+        }
+    }
+    if ($process_exists) {
+        Write-Debug "$this_process still running"
+        continue
+    }
     $CPULoad = $counters.NextValue()
     if ((powercfg /GetActiveScheme) -notlike ("*" + $GamingPowerPlanID + "*")){
         Write-Debug 'Powersaving Powerplan is active'
