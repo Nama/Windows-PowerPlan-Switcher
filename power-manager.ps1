@@ -19,6 +19,10 @@ $counters.CategoryName='Processor'
 $counters.CounterName='% Processor Time'
 $counters.InstanceName='_Total'
 
+# So autostart won't be too slow
+powercfg -s $GamingPowerplanID
+Start-Sleep -Seconds 180
+
 while ($true){
     $KeepGamingPowerPlan = gc 'keepplan.txt'
     Start-Sleep -Seconds $CheckEverySeconds
