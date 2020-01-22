@@ -1,17 +1,17 @@
 # Windows-PowerPlan-Switcher
-Automatically change the powerplan according to CPU load
+Automatically change the powerplan according to CPU load and idle time
 
 The original source is from [ComputerBase](https://www.computerbase.de/forum/threads/skript-windows-powerplan-switcher-for-nvidia.1830609/).
 
 # How to use
 Just adjust the parameters and you are good to go.  
-power-manager.ps1 is the main script, which you can setup in the Taskplaner. The window will be hidden, if "run even if user is not logged in" is active.
+`power-manager.ps1` is the main script, which you can setup in the Taskplaner. The window will be hidden, if "*run even if user is not logged in*" is active.
 
-## $MinCPUUsage
-CPU Load, which needs to fall bellow this value to set energy saving
+## $CPUUsageLimit
+CPU Load, which needs to fall bellow this value to set energy saving or go higher to set gaming plan
 
-## $MaxCPUUsage
-CPU Load, which needs to go higher than this value to set the gaming plan
+## $UserIdleLimit
+Float, seconds. Amount of time the user should be idling to set powersaving plan.
 
 ## $LGLCD [$true or $false]
 Enable or disable showing status on the Logitech keyboard display. Requires Python if enabled.
@@ -21,7 +21,7 @@ run `keep-plan.ps1 true` or `keep-plan.ps1 false`.
 * `true`  
 Will keep the gaming-plan until you run the script again with `false`
 * `false`  
-Will disable the fixed powerplan and make it CPU load dependant again
+Will disable the fixed powerplan and make it CPU load and idle time dependant again
 
 You can set hotkey for the script with `true` and `false` for easy switching.  
 (Shortcut on Desktop, or G-Keys on Logitech keyboards)
