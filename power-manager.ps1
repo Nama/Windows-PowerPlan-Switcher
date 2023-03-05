@@ -1,17 +1,12 @@
 ## To Fill
-$CPUUsageLimit = 15
-$UserIdleLimit = 15.0
+$CPUUsageLimit = 20
+$UseIdleLimit = $false
+$UserIdleLimit = 20.0
 $LGLCD = $false
 $CheckEverySeconds = 3
-$GamingPowerPlanID = '9897998c-92de-4669-853f-b7cd3ecb2790'
-$IdlePowerPlanID = 'a1841308-3541-4fab-bc81-f71556f20b4a'
+$GamingPowerPlanID = '381b4222-f694-41f0-9685-ff5bb260df2e'
+$IdlePowerPlanID = 'e9c7d68e-9629-421f-a10b-ffee110e9100'
 #$DebugPreference = "Continue"
-
-## Power Plans IDs
-# 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c = High performance
-# a1841308-3541-4fab-bc81-f71556f20b4a = Power saver
-# 381b4222-f694-41f0-9685-ff5bb260df2e = Balanced
-# 9897998c-92de-4669-853f-b7cd3ecb2790 = AMD Ryzen Balanced
 
 # https://social.technet.microsoft.com/Forums/en-US/f89267b7-5069-4e57-9970-af80dcc58f8f/get-cpu-usage-faster-with-net-within-powershell-then-using-wmi-or
 $counters = New-Object -TypeName System.Diagnostics.PerformanceCounter
@@ -21,7 +16,7 @@ $counters.InstanceName='_Total'
 
 # So autostart won't be too slow
 powercfg -s $GamingPowerplanID
-#Start-Sleep -Seconds 180
+Start-Sleep -Seconds 20
 
 # https://stackoverflow.com/a/39319540
 Add-Type @'
@@ -73,9 +68,10 @@ function change-powerplan {
 }
 
 while ($true){
+    Start-Sleep -Seconds $CheckEverySeconds
+
     # Keep Gaming Powerplan according to keepplan.txt
     $KeepGamingPowerPlan = gc 'keepplan.txt'
-    Start-Sleep -Seconds $CheckEverySeconds
     if ($KeepGamingPowerPlan -eq 'True') {
         Write-Debug 'Keep Powerplan'
         change-powerplan $GamingPowerPlanID
@@ -99,15 +95,15 @@ while ($true){
     $IdleSeconds = [PInvoke.Win32.UserInput]::IdleTime.TotalSeconds
     Write-Debug ('User IdleTime ' + $IdleSeconds)
     if ($CPULoad -le $CPUUsageLimit) {
-        Write-Debug 'CPU Load is lower than MinCPU'
+        Write-Debug 'CPU Load is lower than threshold'
         # Check user idle time to set $IdlePowerPlanID
-        if ($IdleSeconds -ge $UserIdleLimit) {
+        if (($IdleSeconds -ge $UserIdleLimit) -or (-not $UseIdleLimit)) {
             Write-Debug 'User is idling'
             change-powerplan $IdlePowerPlanID
         }
         else {
             change-powerplan $GamingPowerPlanID
-            }
+        }
     }
     else {
         Write-Debug 'CPU Load is higher than MaxCPU'
